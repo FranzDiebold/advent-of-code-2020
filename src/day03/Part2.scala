@@ -7,8 +7,6 @@
 
 package day03
 
-import scala.io.Source
-
 import day03.Part1.{readMap, countTrees}
 
 object Part2 {
