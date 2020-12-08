@@ -34,7 +34,7 @@ object Part1 {
   }
 
   def main(args: Array[String]): Unit = {
-    val fileName = "src/day03/input.txt"
+    val fileName = "input.txt"
     val map: List[String] = readMap(fileName)
 
     val numTrees = countTrees(map, 3, 1)
