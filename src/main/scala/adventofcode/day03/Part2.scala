@@ -7,14 +7,14 @@
 
 package day03
 
-import day03.Part1.{readMap, countTrees}
+import day03.Part1.{countTrees, readMap}
 
 object Part2 {
   def getNumberOfTreesProduct(fileName: String, slopes: Iterable[Tuple2[Int, Int]]): Long = {
     val map: List[String] = readMap(fileName)
     slopes
-      .map({
-        case (dx: Int, dy: Int) => countTrees(map, dx, dy)
+      .map({ case (dx: Int, dy: Int) =>
+        countTrees(map, dx, dy)
       })
       .map(_.toLong)
       .reduce(_ * _)

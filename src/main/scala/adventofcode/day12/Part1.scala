@@ -15,7 +15,7 @@ object Part1 {
     'N' -> (0, -1),
     'S' -> (0, 1),
     'E' -> (1, 0),
-    'W' -> (-1, 0),
+    'W' -> (-1, 0)
   )
 
   def readInstructions(fileName: String): Iterator[Tuple2[Char, Int]] = {
@@ -23,8 +23,8 @@ object Part1 {
     Source
       .fromResource(fileName)
       .getLines()
-      .map({
-        case instructionRegex(action: String, parameter: String) => (action(0), parameter.toInt)
+      .map({ case instructionRegex(action: String, parameter: String) =>
+        (action(0), parameter.toInt)
       })
   }
 
@@ -44,8 +44,8 @@ object Part1 {
                 case 'R' => numRawQuarterRotations
               }
               val (ndx: Int, ndy: Int) = (1 to numRightQuarterRotations)
-                .foldLeft[Tuple2[Int, Int]]((dx, dy)) {
-                  case ((cdx: Int, cdy: Int), _) => (-1 * cdy, cdx)
+                .foldLeft[Tuple2[Int, Int]]((dx, dy)) { case ((cdx: Int, cdy: Int), _) =>
+                  (-1 * cdy, cdx)
                 }
               ((x, y), (ndx, ndy))
             }
@@ -56,7 +56,8 @@ object Part1 {
       ._1
   }
 
-  def calculateManhattanDistance(position: Tuple2[Int, Int]): Int = position._1.abs + position._2.abs
+  def calculateManhattanDistance(position: Tuple2[Int, Int]): Int =
+    position._1.abs + position._2.abs
 
   def main(args: Array[String]): Unit = {
     val fileName = "day12.txt"

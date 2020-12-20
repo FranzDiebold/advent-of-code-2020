@@ -7,7 +7,7 @@
 
 package day12
 
-import day12.Part1.{DirectionToVectorMap, readInstructions, calculateManhattanDistance}
+import day12.Part1.{calculateManhattanDistance, readInstructions, DirectionToVectorMap}
 
 object Part2 {
   def executeInstructions(instructions: Iterator[Tuple2[Char, Int]]): Tuple2[Int, Int] = {
@@ -26,8 +26,8 @@ object Part2 {
                 case 'R' => numRawQuarterRotations
               }
               val (nwdx: Int, nwdy: Int) = (1 to numRightQuarterRotations)
-                .foldLeft[Tuple2[Int, Int]]((wx, wy)) {
-                  case ((cwdx: Int, cwdy: Int), _) => (-1 * cwdy, cwdx)
+                .foldLeft[Tuple2[Int, Int]]((wx, wy)) { case ((cwdx: Int, cwdy: Int), _) =>
+                  (-1 * cwdy, cwdx)
                 }
               ((x, y), (nwdx, nwdy))
             }

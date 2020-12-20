@@ -15,44 +15,59 @@ object Part1 {
 
   def readInitialState(fileName: String): Map[Int, Map[Int, Map[Int, Char]]] = {
     val initialState: Map[Int, Map[Int, Map[Int, Char]]] = Map[Int, Map[Int, Map[Int, Char]]]()
-      .withDefault(_ => Map[Int, Map[Int, Char]]()
-        .withDefault(_ => Map[Int, Char]()
-          .withDefault(_ => InactiveState)
-        )
+      .withDefault(_ =>
+        Map[Int, Map[Int, Char]]()
+          .withDefault(_ =>
+            Map[Int, Char]()
+              .withDefault(_ => InactiveState)
+          )
       )
     Source
       .fromResource(fileName)
       .getLines()
       .zipWithIndex
       .foldLeft[Map[Int, Map[Int, Map[Int, Char]]]](initialState)({
-        case (state: Map[Int, Map[Int, Map[Int, Char]]], (line: String, y: Int)) => line
-          .zipWithIndex
-          .foldLeft[Map[Int, Map[Int, Map[Int, Char]]]](state)({
-            case (currentState: Map[Int, Map[Int, Map[Int, Char]]], (stateValue: Char, x: Int)) => setState(currentState, x, y, 0, stateValue)
-          })
+        case (state: Map[Int, Map[Int, Map[Int, Char]]], (line: String, y: Int)) =>
+          line.zipWithIndex
+            .foldLeft[Map[Int, Map[Int, Map[Int, Char]]]](state)({
+              case (currentState: Map[Int, Map[Int, Map[Int, Char]]], (stateValue: Char, x: Int)) =>
+                setState(currentState, x, y, 0, stateValue)
+            })
       })
   }
 
-  def setState(state: Map[Int, Map[Int, Map[Int, Char]]], x: Int, y: Int, z: Int, stateValue: Char): Map[Int, Map[Int, Map[Int, Char]]] = {
+  def setState(
+    state: Map[Int, Map[Int, Map[Int, Char]]],
+    x: Int,
+    y: Int,
+    z: Int,
+    stateValue: Char
+  ): Map[Int, Map[Int, Map[Int, Char]]] =
     state + (x -> (state(x) + (y -> (state(x)(y) + (z -> stateValue)))))
-  }
 
-  def getNumberOfActiveNeighborCubes(state: Map[Int, Map[Int, Map[Int, Char]]], x: Int, y: Int, z: Int): Int = {
+  def getNumberOfActiveNeighborCubes(
+    state: Map[Int, Map[Int, Map[Int, Char]]],
+    x: Int,
+    y: Int,
+    z: Int
+  ): Int = {
     (for {
       dx <- Seq(-1, 0, 1)
       dy <- Seq(-1, 0, 1)
       dz <- Seq(-1, 0, 1)
     } yield (dx, dy, dz))
-      .filter({
-        case (dx: Int, dy: Int, dz: Int) => dx != 0 || dy != 0 || dz != 0
+      .filter({ case (dx: Int, dy: Int, dz: Int) =>
+        dx != 0 || dy != 0 || dz != 0
       })
-      .map({
-        case (dx: Int, dy: Int, dz: Int) => state(x + dx)(y + dy)(z + dz)
+      .map({ case (dx: Int, dy: Int, dz: Int) =>
+        state(x + dx)(y + dy)(z + dz)
       })
       .count(_ == ActiveState)
   }
 
-  def performCycle(state: Map[Int, Map[Int, Map[Int, Char]]]): Map[Int, Map[Int, Map[Int, Char]]] = {
+  def performCycle(
+    state: Map[Int, Map[Int, Map[Int, Char]]]
+  ): Map[Int, Map[Int, Map[Int, Char]]] = {
     (for {
       x <- ((state.keySet.min - 1) to (state.keySet.max + 2))
       y <- ((state(0).keySet.min - 1) to (state(0).keySet.max + 2))
@@ -63,8 +78,8 @@ object Part1 {
           val numActiveNeighborCubes: Int = getNumberOfActiveNeighborCubes(state, x, y, z)
           val newCubeState: Char = (state(x)(y)(z), numActiveNeighborCubes) match {
             case (ActiveState, 2) | (ActiveState, 3) => ActiveState
-            case (InactiveState, 3) => ActiveState
-            case _ => InactiveState
+            case (InactiveState, 3)                  => ActiveState
+            case _                                   => InactiveState
           }
           setState(currentState, x, y, z, newCubeState)
         }
@@ -73,16 +88,21 @@ object Part1 {
 
   def countActiveCubes(state: Map[Int, Map[Int, Map[Int, Char]]]): Int = {
     state.values
-      .map(_.values
-        .map(_.values
-          .count(_ == ActiveState)
-        )
-        .sum
+      .map(
+        _.values
+          .map(
+            _.values
+              .count(_ == ActiveState)
+          )
+          .sum
       )
       .sum
   }
 
-  def performNCycles(state: Map[Int, Map[Int, Map[Int, Char]]], n: Int): Map[Int, Map[Int, Map[Int, Char]]] = {
+  def performNCycles(
+    state: Map[Int, Map[Int, Map[Int, Char]]],
+    n: Int
+  ): Map[Int, Map[Int, Map[Int, Char]]] = {
     if (n == 0) {
       return state
     }

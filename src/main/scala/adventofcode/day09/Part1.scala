@@ -29,13 +29,13 @@ object Part1 {
     val firstNumberPair = input
       .sliding(preambleLength + 1)
       .map((window: Seq[Long]) => (window.slice(0, window.size - 1), window(window.size - 1)))
-      .find({
-        case (numbers: Seq[Long], targetNumber: Long) => !isPairSum(targetNumber, numbers.toSet)
+      .find({ case (numbers: Seq[Long], targetNumber: Long) =>
+        !isPairSum(targetNumber, numbers.toSet)
       })
 
     firstNumberPair match {
       case Some((_, targetNumber: Long)) => Some(targetNumber)
-      case None => None
+      case None                          => None
     }
   }
 
@@ -44,7 +44,8 @@ object Part1 {
     val preambleLength = 25
     val input: Iterator[Long] = readInput(fileName)
     findFirstNonPairSumNumber(input, preambleLength) match {
-      case Some(programResult: Long) => println(s"The first number that does not have this property is ${programResult}.")
+      case Some(programResult: Long) =>
+        println(s"The first number that does not have this property is ${programResult}.")
       case None => println("No number found with this property.")
     }
   }

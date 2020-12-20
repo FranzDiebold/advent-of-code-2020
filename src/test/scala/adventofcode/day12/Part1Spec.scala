@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day12.Part1.{readInstructions, executeInstructions, calculateManhattanDistance}
+import day12.Part1.{calculateManhattanDistance, executeInstructions, readInstructions}
 
 class Day12Part1Spec extends AnyFunSuite {
   test("Should get the correct Manhattan distance.") {

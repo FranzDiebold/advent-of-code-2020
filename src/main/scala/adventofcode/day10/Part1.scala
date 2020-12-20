@@ -25,9 +25,7 @@ object Part1 {
   }
 
   def getDifferencesProduct(fileName: String, maxJoltDifference: Int = 3): Int = {
-    val joltageRatings: Seq[Int] = (readJoltageRatings(fileName) ++ Iterator(0))
-      .toSeq
-      .sorted
+    val joltageRatings: Seq[Int] = (readJoltageRatings(fileName) ++ Iterator(0)).toSeq.sorted
       .sliding(2)
       .map((pair: Seq[Int]) => pair(1) - pair(0))
       .takeWhile(_ <= maxJoltDifference)
@@ -40,6 +38,8 @@ object Part1 {
   def main(args: Array[String]): Unit = {
     val fileName = "day10.txt"
     val differencesProduct: Int = getDifferencesProduct(fileName)
-    println(s"The number of 1-jolt differences multiplied by the number of 3-jolt differences is ${differencesProduct}.")
+    println(
+      s"The number of 1-jolt differences multiplied by the number of 3-jolt differences is ${differencesProduct}."
+    )
   }
 }

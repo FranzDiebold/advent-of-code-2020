@@ -14,7 +14,7 @@ object Part1 {
   val Floor = '.'
   val EmptySeat = 'L'
   val OccupiedSeat = '#'
- 
+
   def readSeatLayout(fileName: String): IndexedSeq[String] = {
     Source
       .fromResource(fileName)
@@ -43,18 +43,16 @@ object Part1 {
       (-1, 0),
       (-1, -1)
     )
-      .map({
-        case (dx: Int, dy: Int) => getStateAtLocation(seatLayout, x + dx, y + dy)
+      .map({ case (dx: Int, dy: Int) =>
+        getStateAtLocation(seatLayout, x + dx, y + dy)
       })
       .count(_ == OccupiedSeat)
   }
 
   def updateSeatLayout(seatLayout: IndexedSeq[String]): IndexedSeq[String] = {
-    seatLayout
-      .zipWithIndex
-      .map({
-        case (line: String, y: Int) => line
-          .zipWithIndex
+    seatLayout.zipWithIndex
+      .map({ case (line: String, y: Int) =>
+        line.zipWithIndex
           .map({
             case (state: Char, x: Int) => {
               val numberOfOccupiedAdjacentSeats = getNumberOfOccupiedAdjacentSeats(seatLayout, x, y)
@@ -76,8 +74,8 @@ object Part1 {
                 }
               }
             }
-        })
-        .mkString
+          })
+          .mkString
       })
       .toIndexedSeq
   }
@@ -93,8 +91,9 @@ object Part1 {
 
   def getTotalNumberOfOccupiedSeats(seatLayout: IndexedSeq[String]): Int = {
     seatLayout
-      .map((line: String) => line
-        .count(_ == OccupiedSeat)
+      .map((line: String) =>
+        line
+          .count(_ == OccupiedSeat)
       )
       .sum
   }

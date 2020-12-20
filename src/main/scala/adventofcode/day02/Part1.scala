@@ -17,7 +17,8 @@ object Part1 {
 
   def extractValuesFromLine(line: String): Option[Tuple3[Tuple2[Int, Int], Char, String]] = {
     line match {
-      case s"${min}-${max} ${char}: ${password}" => Some(((min.toInt, max.toInt), char(0), password))
+      case s"${min}-${max} ${char}: ${password}" =>
+        Some(((min.toInt, max.toInt), char(0), password))
       case _ => None
     }
   }
@@ -28,7 +29,8 @@ object Part1 {
       .getLines()
       .map(extractValuesFromLine)
       .count({
-        case Some(((min: Int, max: Int), char: Char, password: String)) => isPasswordValid(password, char, min, max)
+        case Some(((min: Int, max: Int), char: Char, password: String)) =>
+          isPasswordValid(password, char, min, max)
         case None => false
       })
   }

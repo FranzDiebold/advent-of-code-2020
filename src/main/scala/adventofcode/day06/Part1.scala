@@ -21,9 +21,10 @@ object Part1 {
       .getLines()
 
     splitIterator(fileLines, "")
-      .map((lines: Seq[String]) => lines
-        .map(_.toSet)
-        .reduce(_ ++ _)
+      .map((lines: Seq[String]) =>
+        lines
+          .map(_.toSet)
+          .reduce(_ ++ _)
       )
       .map(_.size)
       .sum

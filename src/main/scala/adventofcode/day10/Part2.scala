@@ -17,17 +17,15 @@ object Part2 {
 
   def tribonacci(n: Int): Int = {
     n match {
-      case 0 => 1
-      case 1 => 1
-      case 2 => 2
+      case 0      => 1
+      case 1      => 1
+      case 2      => 2
       case n: Int => tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3)
     }
   }
 
   def getDifferencesProduct(fileName: String): Long = {
-    val joltageRatings: Iterator[Int] = (readJoltageRatings(fileName) ++ Iterator(0))
-      .toSeq
-      .sorted
+    val joltageRatings: Iterator[Int] = (readJoltageRatings(fileName) ++ Iterator(0)).toSeq.sorted
       .sliding(2)
       .map((pair: Seq[Int]) => pair(1) - pair(0))
       .takeWhile(_ <= 3)

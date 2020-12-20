@@ -26,10 +26,9 @@ object Part1 {
   }
 
   def countTrees(map: List[String], dx: Int, dy: Int): Int = {
-    (0 to map.length - 1 by dy)
-      .zipWithIndex
-      .count({
-          case (y: Int, idx: Int) => getObjectAtLocation(map, idx * dx, y) == Tree
+    (0 to map.length - 1 by dy).zipWithIndex
+      .count({ case (y: Int, idx: Int) =>
+        getObjectAtLocation(map, idx * dx, y) == Tree
       })
   }
 

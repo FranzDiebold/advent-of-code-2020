@@ -24,17 +24,22 @@ object Part1 {
     val keyValueRegex: Regex = "(.*):(.*)".r
 
     splitIterator(fileLines, "")
-      .map((lines: Seq[String]) => lines
-        .map((line: String) => {
-          line.split(" ")
-          .foldLeft(Map[String, String]())((partialPassport: Map[String, String], rawElement: String) => {
-            rawElement match {
-              case keyValueRegex(key: String, value: String) => partialPassport + (key -> value)
-              case _ => partialPassport
-            }
+      .map((lines: Seq[String]) =>
+        lines
+          .map((line: String) => {
+            line
+              .split(" ")
+              .foldLeft(Map[String, String]())(
+                (partialPassport: Map[String, String], rawElement: String) => {
+                  rawElement match {
+                    case keyValueRegex(key: String, value: String) =>
+                      partialPassport + (key -> value)
+                    case _ => partialPassport
+                  }
+                }
+              )
           })
-        })
-        .reduce(_ ++ _)
+          .reduce(_ ++ _)
       )
   }
 
@@ -43,9 +48,8 @@ object Part1 {
     requiredPassportFields subsetOf passport.keySet
   }
 
-  def getNumberOfValidPassports(fileName: String): Int = {
+  def getNumberOfValidPassports(fileName: String): Int =
     readPassports(fileName).count(isPasswortValid)
-  }
 
   def main(args: Array[String]): Unit = {
     val fileName = "day04.txt"

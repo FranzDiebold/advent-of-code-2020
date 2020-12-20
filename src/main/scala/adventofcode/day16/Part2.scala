@@ -10,15 +10,22 @@ package day16
 import day16.Part1.{readNotes}
 
 object Part2 {
-  def isTicketValid(validRanges: Seq[Tuple2[String, Tuple2[Tuple2[Int, Int], Tuple2[Int, Int]]]], ticketValues: Seq[Int]): Boolean = {
+  def isTicketValid(
+    validRanges: Seq[Tuple2[String, Tuple2[Tuple2[Int, Int], Tuple2[Int, Int]]]],
+    ticketValues: Seq[Int]
+  ): Boolean = {
     ticketValues
-      .forall((value: Int) => validRanges.exists({
-        case (_, ((from1: Int, to1: Int), (from2: Int, to2: Int))) => (from1 <= value && value <= to1) || (from2 <= value && value <= to2)
-      })
-    )
+      .forall((value: Int) =>
+        validRanges.exists({ case (_, ((from1: Int, to1: Int), (from2: Int, to2: Int))) =>
+          (from1 <= value && value <= to1) || (from2 <= value && value <= to2)
+        })
+      )
   }
 
-  def getMostProbableNextFieldMapping(fieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]], numValidTickets: Int): Tuple2[String, Int] = {
+  def getMostProbableNextFieldMapping(
+    fieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]],
+    numValidTickets: Int
+  ): Tuple2[String, Int] = {
     val mostProbableFieldToValueIdx: Tuple2[String, Seq[Int]] = fieldToPossibleValueIdxsMap
       .map({
         case (field: String, possibleValueIdxsMap: Map[Int, Int]) => {
@@ -36,55 +43,75 @@ object Part2 {
     (mostProbableFieldToValueIdx._1, mostProbableFieldToValueIdx._2(0))
   }
 
-  def chooseFieldMappings(fieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]], numValidTickets: Int, currentFieldMapping: Map[String, Int] = Map[String, Int]()): Map[String, Int] = {
+  def chooseFieldMappings(
+    fieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]],
+    numValidTickets: Int,
+    currentFieldMapping: Map[String, Int] = Map[String, Int]()
+  ): Map[String, Int] = {
     if (fieldToPossibleValueIdxsMap.isEmpty) {
       return currentFieldMapping
     }
-    val (field: String, valueIdx: Int) = getMostProbableNextFieldMapping(fieldToPossibleValueIdxsMap, numValidTickets)
-    val newFieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]] = (fieldToPossibleValueIdxsMap - field)
-      .mapValues((possibleValueIdxsMap: Map[Int, Int]) => possibleValueIdxsMap - valueIdx)
-      .toMap
+    val (field: String, valueIdx: Int) =
+      getMostProbableNextFieldMapping(fieldToPossibleValueIdxsMap, numValidTickets)
+    val newFieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]] =
+      (fieldToPossibleValueIdxsMap - field)
+        .mapValues((possibleValueIdxsMap: Map[Int, Int]) => possibleValueIdxsMap - valueIdx)
+        .toMap
     val newFieldMapping: Map[String, Int] = currentFieldMapping + (field -> valueIdx)
     chooseFieldMappings(newFieldToPossibleValueIdxsMap, numValidTickets, newFieldMapping)
   }
 
-  def determineFieldMapping(validRanges: Seq[Tuple2[String, Tuple2[Tuple2[Int, Int], Tuple2[Int, Int]]]], nearbyTicketsValues: Seq[Seq[Int]]): Map[String, Int] = {
+  def determineFieldMapping(
+    validRanges: Seq[Tuple2[String, Tuple2[Tuple2[Int, Int], Tuple2[Int, Int]]]],
+    nearbyTicketsValues: Seq[Seq[Int]]
+  ): Map[String, Int] = {
     val validNearbyTicketsValues: Seq[Seq[Int]] = nearbyTicketsValues
       .filter((ticketValues: Seq[Int]) => isTicketValid(validRanges, ticketValues))
 
     val fieldToPossibleValueIdxsMap: Map[String, Map[Int, Int]] = validNearbyTicketsValues
-      .foldLeft[Map[String, Map[Int, Int]]](Map[String, Map[Int, Int]]().withDefault(_ => Map[Int, Int]().withDefault(_ => 0)))({
-        case (fieldToValueIdxsMap: Map[String, Map[Int, Int]], ticketValues: Seq[Int]) => ticketValues
-          .zipWithIndex
+      .foldLeft[Map[String, Map[Int, Int]]](
+        Map[String, Map[Int, Int]]().withDefault(_ => Map[Int, Int]().withDefault(_ => 0))
+      )({ case (fieldToValueIdxsMap: Map[String, Map[Int, Int]], ticketValues: Seq[Int]) =>
+        ticketValues.zipWithIndex
           .foldLeft[Map[String, Map[Int, Int]]](fieldToValueIdxsMap)({
-            case (currentFieldToValueIdxsMap: Map[String, Map[Int, Int]], (value: Int, valueIdx: Int)) => validRanges
-              .foldLeft[Map[String, Map[Int, Int]]](currentFieldToValueIdxsMap)({
-                case (map: Map[String, Map[Int, Int]], (field: String, ((from1: Int, to1: Int), (from2: Int, to2: Int)))) => {
-                  if ((from1 <= value && value <= to1) || (from2 <= value && value <= to2)) {
-                    map + (field -> (map(field) + (valueIdx -> (map(field)(valueIdx) + 1))))
-                  } else {
-                    map
+            case (
+                  currentFieldToValueIdxsMap: Map[String, Map[Int, Int]],
+                  (value: Int, valueIdx: Int)
+                ) =>
+              validRanges
+                .foldLeft[Map[String, Map[Int, Int]]](currentFieldToValueIdxsMap)({
+                  case (
+                        map: Map[String, Map[Int, Int]],
+                        (field: String, ((from1: Int, to1: Int), (from2: Int, to2: Int)))
+                      ) => {
+                    if ((from1 <= value && value <= to1) || (from2 <= value && value <= to2)) {
+                      map + (field -> (map(field) + (valueIdx -> (map(field)(valueIdx) + 1))))
+                    } else {
+                      map
+                    }
                   }
-                }
-              })
+                })
           })
       })
 
     chooseFieldMappings(fieldToPossibleValueIdxsMap, validNearbyTicketsValues.size)
   }
 
-  def getTicketFieldValues(ticketValues: Seq[Int], fieldMapping: Map[String, Int]): Map[String, Int] = {
+  def getTicketFieldValues(
+    ticketValues: Seq[Int],
+    fieldMapping: Map[String, Int]
+  ): Map[String, Int] = {
     fieldMapping
-      .map({
-        case (field: String, valueIdx: Int) => (field, ticketValues(valueIdx))
+      .map({ case (field: String, valueIdx: Int) =>
+        (field, ticketValues(valueIdx))
       })
   }
 
   def getFieldsWithPrefixProduct(ticketFieldValues: Map[String, Int], prefix: String): BigInt = {
     ticketFieldValues
       .filter(_._1.startsWith(prefix))
-      .map({
-        case (_, value: Int) => BigInt(value)
+      .map({ case (_, value: Int) =>
+        BigInt(value)
       })
       .product
   }
@@ -92,10 +119,17 @@ object Part2 {
   def main(args: Array[String]): Unit = {
     val fileName = "day16.txt"
     val prefix = "departure"
-    val (validRanges: Seq[Tuple2[String, Tuple2[Tuple2[Int, Int], Tuple2[Int, Int]]]], yourTicketValues: Seq[Int], nearbyTicketsValues: Seq[Seq[Int]]) = readNotes(fileName)
+    val (
+      validRanges: Seq[Tuple2[String, Tuple2[Tuple2[Int, Int], Tuple2[Int, Int]]]],
+      yourTicketValues: Seq[Int],
+      nearbyTicketsValues: Seq[Seq[Int]]
+    ) = readNotes(fileName)
     val fieldMapping: Map[String, Int] = determineFieldMapping(validRanges, nearbyTicketsValues)
-    val yourTicketFieldValues: Map[String, Int] = getTicketFieldValues(yourTicketValues, fieldMapping)
+    val yourTicketFieldValues: Map[String, Int] =
+      getTicketFieldValues(yourTicketValues, fieldMapping)
     val productDepartureFields: BigInt = getFieldsWithPrefixProduct(yourTicketFieldValues, prefix)
-    println(s"The product of the six values starting with '${prefix}' is ${productDepartureFields}.")
+    println(
+      s"The product of the six values starting with '${prefix}' is ${productDepartureFields}."
+    )
   }
 }

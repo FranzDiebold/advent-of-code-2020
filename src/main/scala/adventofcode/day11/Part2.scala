@@ -7,12 +7,25 @@
 
 package day11
 
-import day11.Part1.{Floor, EmptySeat, OccupiedSeat, readSeatLayout, getStateAtLocation, getTotalNumberOfOccupiedSeats}
+import day11.Part1.{
+  getStateAtLocation,
+  getTotalNumberOfOccupiedSeats,
+  readSeatLayout,
+  EmptySeat,
+  Floor,
+  OccupiedSeat
+}
 
 object Part2 {
-  def getVisibleSeatInDirection(seatLayout: IndexedSeq[String], x: Int, y: Int, dx: Int, dy: Int): Int = {
+  def getVisibleSeatInDirection(
+    seatLayout: IndexedSeq[String],
+    x: Int,
+    y: Int,
+    dx: Int,
+    dy: Int
+  ): Int = {
     getStateAtLocation(seatLayout, x + dx, y + dy) match {
-      case Floor => getVisibleSeatInDirection(seatLayout, x + dx, y + dy, dx, dy)
+      case Floor       => getVisibleSeatInDirection(seatLayout, x + dx, y + dy, dx, dy)
       case state: Char => state
     }
   }
@@ -28,22 +41,20 @@ object Part2 {
       (-1, 0),
       (-1, -1)
     )
-      .map({
-        case (dx: Int, dy: Int) => getVisibleSeatInDirection(seatLayout, x, y, dx, dy)
+      .map({ case (dx: Int, dy: Int) =>
+        getVisibleSeatInDirection(seatLayout, x, y, dx, dy)
       })
       .count(_ == OccupiedSeat)
   }
 
   def updateSeatLayout(seatLayout: IndexedSeq[String]): IndexedSeq[String] = {
-    seatLayout
-      .zipWithIndex
-      .map({
-        case (line: String, y: Int) => line
-        .zipWithIndex
-        .map({
+    seatLayout.zipWithIndex
+      .map({ case (line: String, y: Int) =>
+        line.zipWithIndex
+          .map({
             case (state: Char, x: Int) => {
-            val numberOfOccupiedVisibleSeats = getNumberOfOccupiedVisibleSeats(seatLayout, x, y)
-            state match {
+              val numberOfOccupiedVisibleSeats = getNumberOfOccupiedVisibleSeats(seatLayout, x, y)
+              state match {
                 case Floor => Floor
                 case EmptySeat => {
                   if (numberOfOccupiedVisibleSeats == 0) {
@@ -59,10 +70,10 @@ object Part2 {
                     OccupiedSeat
                   }
                 }
+              }
             }
-          }
-        })
-        .mkString
+          })
+          .mkString
       })
       .toIndexedSeq
   }
