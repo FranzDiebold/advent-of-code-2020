@@ -42,8 +42,9 @@ object Part2 {
     }
 
     val eclValid: Boolean = passport.get("ecl") match {
-      case Some("amb") | Some("blu") | Some("brn") | Some("gry") | Some("grn") | Some("hzl") |
-          Some("oth") =>
+      case Some("amb") | Some("blu") | Some("brn") | Some("gry") | Some("grn") | Some("hzl") | Some(
+            "oth"
+          ) =>
         true
       case _ => false
     }
