@@ -7,10 +7,16 @@
 
 package day09
 
-import day09.Part1.{readInput, findFirstNonPairSumNumber}
+import day09.Part1.{findFirstNonPairSumNumber, readInput}
 
 object Part2 {
-  def findContiguousNumbersIdxToSum(numbers: IndexedSeq[Long], targetNumber: Long, currentStart: Int = 0, currentEnd: Int = 0, currentSum: Long = 0): Option[Tuple2[Int, Int]] = {
+  def findContiguousNumbersIdxToSum(
+    numbers: IndexedSeq[Long],
+    targetNumber: Long,
+    currentStart: Int = 0,
+    currentEnd: Int = 0,
+    currentSum: Long = 0
+  ): Option[Tuple2[Int, Int]] = {
     if (currentSum == targetNumber && (currentEnd - currentStart) > 1) {
       return Some((currentStart, currentEnd))
     }
@@ -18,9 +24,21 @@ object Part2 {
       return None
     }
     if (currentSum > targetNumber || currentEnd >= numbers.size) {
-      return findContiguousNumbersIdxToSum(numbers, targetNumber, currentStart + 1, currentStart + 1, 0)
+      return findContiguousNumbersIdxToSum(
+        numbers,
+        targetNumber,
+        currentStart + 1,
+        currentStart + 1,
+        0
+      )
     }
-    return findContiguousNumbersIdxToSum(numbers, targetNumber, currentStart, currentEnd + 1, currentSum + numbers(currentEnd))
+    return findContiguousNumbersIdxToSum(
+      numbers,
+      targetNumber,
+      currentStart,
+      currentEnd + 1,
+      currentSum + numbers(currentEnd)
+    )
   }
 
   def findEncryptionWeakness(fileName: String, preambleLength: Int): Option[Long] = {
@@ -43,7 +61,8 @@ object Part2 {
     val fileName = "day09.txt"
     val preambleLength = 25
     findEncryptionWeakness(fileName, preambleLength) match {
-      case Some(encryptionWeakness: Long) => println(s"The encryption weakness is ${encryptionWeakness}.")
+      case Some(encryptionWeakness: Long) =>
+        println(s"The encryption weakness is ${encryptionWeakness}.")
       case None => println("Encryption weakness cannot be calculated.")
     }
   }

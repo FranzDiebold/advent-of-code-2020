@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day17.Part2.{readInitialState, performNCycles, countActiveCubes}
+import day17.Part2.{countActiveCubes, performNCycles, readInitialState}
 
 class Day17Part2Spec extends AnyFunSuite {
   test("Should get the correct number of active cubes.") {

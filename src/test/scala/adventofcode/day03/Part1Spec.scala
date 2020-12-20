@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day03.Part1.{readMap, countTrees}
+import day03.Part1.{countTrees, readMap}
 
 class Day03Part1Spec extends AnyFunSuite {
   test("Should get the correct number trees.") {

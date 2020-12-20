@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day09.Part1.{readInput, findFirstNonPairSumNumber}
+import day09.Part1.{findFirstNonPairSumNumber, readInput}
 
 class Day09Part1Spec extends AnyFunSuite {
   test("Should get the correct first non pair sum number.") {

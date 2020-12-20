@@ -24,7 +24,7 @@ object Part2 {
 
     seatPair match {
       case Some(neighbours: Seq[Int]) => Some(neighbours(1) - 1)
-      case None => None
+      case None                       => None
     }
   }
 
@@ -33,7 +33,7 @@ object Part2 {
     val seatIdOption: Option[Int] = findSeat(fileName)
     seatIdOption match {
       case Some(seatId) => println(s"The seat ID is ${seatId}.")
-      case _ => println("Not seat ID found.")
+      case _            => println("Not seat ID found.")
     }
   }
 }

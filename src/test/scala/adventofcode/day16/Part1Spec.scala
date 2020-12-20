@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day16.Part1.{readNotes, getTicketScanningErrorRate}
+import day16.Part1.{getTicketScanningErrorRate, readNotes}
 
 class Day16Part1Spec extends AnyFunSuite {
   test("Should get the correct scanning error rate.") {

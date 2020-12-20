@@ -19,10 +19,10 @@ object Part2 {
       ("iyr", 2010, 2020),
       ("eyr", 2020, 2030)
     )
-      .map({
-        case (key: String, min: Int, max: Int) => passport.get(key) match {
+      .map({ case (key: String, min: Int, max: Int) =>
+        passport.get(key) match {
           case Some(yearRegex(year: String)) => min <= year.toInt && year.toInt <= max
-          case _ => false
+          case _                             => false
         }
       })
       .reduce(_ && _)
@@ -32,32 +32,33 @@ object Part2 {
     val hgtValid: Boolean = passport.get("hgt") match {
       case Some(hgtCmRegex(hgt: String)) => 150 <= hgt.toInt && hgt.toInt <= 193
       case Some(hgtInRegex(hgt: String)) => 59 <= hgt.toInt && hgt.toInt <= 76
-      case _ => false
+      case _                             => false
     }
 
     val hclRegex: Regex = "#[0-9a-f]{6}".r
     val hclValid: Boolean = passport.get("hcl") match {
       case Some(hclRegex()) => true
-      case _ => false
+      case _                => false
     }
 
     val eclValid: Boolean = passport.get("ecl") match {
-      case Some("amb") | Some("blu") | Some("brn") | Some("gry") | Some("grn") | Some("hzl") | Some("oth") => true
+      case Some("amb") | Some("blu") | Some("brn") | Some("gry") | Some("grn") | Some("hzl") |
+          Some("oth") =>
+        true
       case _ => false
     }
 
     val pidRegex: Regex = """\d{9}""".r
     val pidValid: Boolean = passport.get("pid") match {
       case Some(pidRegex()) => true
-      case _ => false
+      case _                => false
     }
 
     yearsValid && hgtValid && hclValid && eclValid && pidValid
   }
 
-  def getNumberOfValidPassports(fileName: String): Int = {
+  def getNumberOfValidPassports(fileName: String): Int =
     readPassports(fileName).count(isPasswortValid)
-  }
 
   def main(args: Array[String]): Unit = {
     val fileName = "day04.txt"

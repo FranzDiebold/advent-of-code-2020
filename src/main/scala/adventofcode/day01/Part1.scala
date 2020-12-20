@@ -16,16 +16,18 @@ object Part1 {
       .getLines()
       .map(_.toInt)
       .scanLeft[Tuple2[Option[Int], Set[Int]]]((None, Set[Int]()))({
-        case ((Some(previousValue), allPreviousValues), currentValue) => (Option(currentValue), allPreviousValues + previousValue)
+        case ((Some(previousValue), allPreviousValues), currentValue) =>
+          (Option(currentValue), allPreviousValues + previousValue)
         case ((None, allPreviousValues), currentValue) => (Option(currentValue), allPreviousValues)
       })
       .find({
-        case (Some(currentValue), allPreviousValues) => allPreviousValues.contains(targetValue - currentValue)
+        case (Some(currentValue), allPreviousValues) =>
+          allPreviousValues.contains(targetValue - currentValue)
         case (None, allPreviousValues) => false
       })
       .map({
         case (Some(currentValue), _) => Some(((targetValue - currentValue), currentValue))
-        case (None, _) => None
+        case (None, _)               => None
       })
   }
 
@@ -36,7 +38,9 @@ object Part1 {
 
     pair match {
       case Some(Some(pairValue)) =>
-        println(s"The two entries that sum to $targetValue are $pairValue. Their product is ${pairValue._1 * pairValue._2}.")
+        println(
+          s"The two entries that sum to $targetValue are $pairValue. Their product is ${pairValue._1 * pairValue._2}."
+        )
       case _ => println(s"No two entries can be found that sum up to $targetValue!")
     }
   }

@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day11.Part1.{readSeatLayout, getTotalNumberOfOccupiedSeats}
+import day11.Part1.{getTotalNumberOfOccupiedSeats, readSeatLayout}
 import day11.Part2.findStableSeatLayout
 
 class Day11Part2Spec extends AnyFunSuite {

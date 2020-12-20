@@ -1,6 +1,6 @@
 import org.scalatest.funsuite._
 
-import day12.Part1.{readInstructions, calculateManhattanDistance}
+import day12.Part1.{calculateManhattanDistance, readInstructions}
 import day12.Part2.executeInstructions
 
 class Day12Part2Spec extends AnyFunSuite {

@@ -17,23 +17,48 @@ object Part1 {
       .fromResource(fileName)
       .getLines()
       .map({
-        case instructionRegex(operation: String, argument: String) => Some(operation, argument.toInt)
+        case instructionRegex(operation: String, argument: String) =>
+          Some(operation, argument.toInt)
         case _ => None
       })
       .toIndexedSeq
   }
 
-  def runProgram(program: IndexedSeq[Option[Tuple2[String, Int]]], instructionPointer: Int = 0, accumulator: Int = 0, previousInstructions: Set[Int] = Set[Int]()): Option[Int] = {
+  def runProgram(
+    program: IndexedSeq[Option[Tuple2[String, Int]]],
+    instructionPointer: Int = 0,
+    accumulator: Int = 0,
+    previousInstructions: Set[Int] = Set[Int]()
+  ): Option[Int] = {
     if (previousInstructions.contains(instructionPointer)) {
       return Some(accumulator)
     }
     program(instructionPointer) match {
-      case Some((operation: String, argument: Int)) => operation match {
-        case "nop" => runProgram(program, instructionPointer + 1, accumulator, previousInstructions + instructionPointer)
-        case "acc" => runProgram(program, instructionPointer + 1, accumulator + argument, previousInstructions + instructionPointer)
-        case "jmp" => runProgram(program, instructionPointer + argument, accumulator,  previousInstructions + instructionPointer)
-        case _ => None
-      }
+      case Some((operation: String, argument: Int)) =>
+        operation match {
+          case "nop" =>
+            runProgram(
+              program,
+              instructionPointer + 1,
+              accumulator,
+              previousInstructions + instructionPointer
+            )
+          case "acc" =>
+            runProgram(
+              program,
+              instructionPointer + 1,
+              accumulator + argument,
+              previousInstructions + instructionPointer
+            )
+          case "jmp" =>
+            runProgram(
+              program,
+              instructionPointer + argument,
+              accumulator,
+              previousInstructions + instructionPointer
+            )
+          case _ => None
+        }
       case None => None
     }
   }
@@ -43,7 +68,7 @@ object Part1 {
     val program: IndexedSeq[Option[Tuple2[String, Int]]] = readProgram(fileName)
     runProgram(program) match {
       case Some(programResult: Int) => println(s"The value in the accumulator is ${programResult}.")
-      case None => println("Something went wrong running the program.")
+      case None                     => println("Something went wrong running the program.")
     }
   }
 }
