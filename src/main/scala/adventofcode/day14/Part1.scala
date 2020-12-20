@@ -60,9 +60,8 @@ object Part1 {
       }
   }
 
-  def sumMemoryValues(memory: Map[BigInt, BigInt]): BigInt = {
+  def sumMemoryValues(memory: Map[BigInt, BigInt]): BigInt =
     memory.values.sum
-  }
 
   def main(args: Array[String]): Unit = {
     val fileName = "day14.txt"
