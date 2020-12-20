@@ -12,6 +12,6 @@ jobs:
       with:
         java-version: 1.8
     - name: Run tests
-      run: sbt test
+      run: make test
     - name: Run linting
-      run: sbt scalafmtCheckAll
+      run: make lint
