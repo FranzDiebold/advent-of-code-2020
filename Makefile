@@ -4,7 +4,7 @@ help:  ## Show this help.
 
 .PHONY: test
 test:  ## Run tests.
-	sbt clean test
+	sbt clean coverage test coverageReport
 
 .PHONY: lint
 lint:  ## Run linting.

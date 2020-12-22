@@ -13,5 +13,10 @@ jobs:
         java-version: 1.8
     - name: Run tests
       run: make test
+    - name: Upload test coverage report artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test-Coverage-Report
+        path: target/scala-2.13/scoverage-report/
     - name: Run linting
       run: make lint
